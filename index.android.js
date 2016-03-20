@@ -91,7 +91,7 @@ var FrameAnim = React.createClass({
     this.setState({
       _doNotStart:true,
       _left:0,
-      //_interval:requestAnimationFrame(this._tick),
+      _interval:requestAnimationFrame(this._tick),
       _interval2:requestAnimationFrame(this._tick2),
     });
   },
@@ -102,10 +102,10 @@ var FrameAnim = React.createClass({
   _tick1Stop: function(){
     _doNotStart:false,
 
-    //clearTimeout(this.state._timer);
+    clearTimeout(this.state._timer);
     clearTimeout(this.state._timer2);
 
-    //cancelAnimationFrame(this.state._interval);
+    cancelAnimationFrame(this.state._interval);
     cancelAnimationFrame(this.state._interval2);
 
     this.setState(this.getInitialState());
