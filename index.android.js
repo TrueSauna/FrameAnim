@@ -194,7 +194,9 @@ var FrameAnim = React.createClass({
     return (
       <View style={styles.container}>
 
-        <Image source={this.state._showImage} style={styles.image}></Image>
+        <Image source={this.state._showImage} style={[styles.image]}>
+
+        </Image>
 
         <Text style={{left:this.state._left}}>AnImAtEd</Text>
 
@@ -216,7 +218,7 @@ var FrameAnim = React.createClass({
         <Image source={require("./images/ball6.png")} style={styles.image2}></Image>
         <Image source={require("./images/ball7.png")} style={styles.image2}></Image>
         <Image source={require("./images/ball8.png")} style={styles.image2}></Image>
-        
+
         */}
 
       </View>
@@ -241,7 +243,6 @@ const styles = StyleSheet.create({
   image:{
     width:50,
     height:50,
-    backgroundColor: 'transparent'
   },
   image2:{
     height:0,
