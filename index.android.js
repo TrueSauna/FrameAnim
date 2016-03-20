@@ -173,13 +173,11 @@ var FrameAnim = React.createClass({
       }
     }
 
-    this.state._showImage = this.state._images[this.state._ballCounter].img;
-
     this.state._timer2 = setTimeout(() => {
       this.setState({
         _ballCounter: this.state._ballCounter,
         _ballDirection: this.state._ballDirection,
-        _showImage: this.state._showImage,
+        _showImage: this.state._images[this.state._ballCounter].img,
         _interval2: requestAnimationFrame(this._tick2),
       });
     },50);
