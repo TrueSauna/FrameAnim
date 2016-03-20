@@ -38,7 +38,7 @@ var FrameAnim = React.createClass({
       _doNotStart:false,
       _ballCounter:0,
       _prevBallCounter:0,
-      _ballTimeOut:150,
+      _ballTimeOut:10,
 /*
       _images: {
         ball1: require('./images/ball1.png'),
@@ -87,8 +87,6 @@ var FrameAnim = React.createClass({
 
   //starts animation
   _tick1Start: function(){
-
-    varTEST1 = '_start';
 
     //disables multiple starts
     if(this.state._doNotStart){
@@ -186,7 +184,7 @@ var FrameAnim = React.createClass({
         _showImage: this.state._images[this.state._ballCounter].img,
         _interval2: requestAnimationFrame(this._tick2),
       });
-    },1);
+    },this.state._ballTimeOut);
 
   },
 
@@ -198,12 +196,7 @@ var FrameAnim = React.createClass({
 
         <Image source={this.state._showImage} style={styles.image}></Image>
 
-        <Text style={{left:this.state._left}}>Animated</Text>
-
-        <Text>{varTEST1}</Text>
-        <Text>{varTEST2}</Text>
-
-        <Text>{this.state._left}</Text>
+        <Text style={{left:this.state._left}}>AnImAtEd</Text>
 
         <TouchableHighlight style={[styles.roundBox, {top:20, backgroundColor:'green'}]} onPress={this._tick1Start}>
           <Text style={{left:35, top:30}}>Start</Text>
@@ -213,18 +206,18 @@ var FrameAnim = React.createClass({
           <Text style={{left:35, top:30}}>Stop</Text>
         </TouchableHighlight>
 
+        {/* ball-images could be loaded here with width & height 0, but it slows animations down
 
-        {/* these are temporary fix for preloading images -> should try AsyncStorage */}
-        {/* slows animation.., delete these to test::: */}
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball1.png')}></Image>
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball2.png')}></Image>
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball3.png')}></Image>
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball4.png')}></Image>
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball5.png')}></Image>
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball6.png')}></Image>
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball7.png')}></Image>
-        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball8.png')}></Image>
-
+        <Image source={require("./images/ball1.png")} style={styles.image2}></Image>
+        <Image source={require("./images/ball2.png")} style={styles.image2}></Image>
+        <Image source={require("./images/ball3.png")} style={styles.image2}></Image>
+        <Image source={require("./images/ball4.png")} style={styles.image2}></Image>
+        <Image source={require("./images/ball5.png")} style={styles.image2}></Image>
+        <Image source={require("./images/ball6.png")} style={styles.image2}></Image>
+        <Image source={require("./images/ball7.png")} style={styles.image2}></Image>
+        <Image source={require("./images/ball8.png")} style={styles.image2}></Image>
+        
+        */}
 
       </View>
     );
@@ -249,6 +242,9 @@ const styles = StyleSheet.create({
     width:50,
     height:50,
     backgroundColor: 'transparent'
+  },
+  image2:{
+    height:0,
   }
 });
 
