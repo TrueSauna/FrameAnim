@@ -186,7 +186,7 @@ var FrameAnim = React.createClass({
         _showImage: this.state._images[this.state._ballCounter].img,
         _interval2: requestAnimationFrame(this._tick2),
       });
-    },50);
+    },1);
 
   },
 
@@ -215,6 +215,7 @@ var FrameAnim = React.createClass({
 
 
         {/* these are temporary fix for preloading images -> should try AsyncStorage */}
+        {/* slows animation.., delete these to test::: */}
         <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball1.png')}></Image>
         <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball2.png')}></Image>
         <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball3.png')}></Image>
