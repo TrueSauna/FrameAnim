@@ -149,9 +149,8 @@ var FrameAnim = React.createClass({
   },
 
 
-
+  //ongoing animation for frame-animation (ball that changes size)
   _tick2: function(){
-
 
     if(this.state._ballDirection == '+'){
       if(this.state._ballCounter == 7)
