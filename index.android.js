@@ -10,18 +10,22 @@ import React, {
   Text,
   View,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  AsyncStorage,
 } from 'react-native';
 
 var varTEST1 = 'test';
 var varTEST2 = 'test2';
 
-
 var FrameAnim = React.createClass({
 
+  componentWillMount: function(){
+
+  },
 
   getInitialState: function(){
     return{
+
       _left: 0,
       _interval: null,
       _interval2:null,
@@ -76,11 +80,14 @@ var FrameAnim = React.createClass({
           img: require("./images/ball8.png")
         },
       ],
+
+
     };
   },
 
   //starts animation
   _tick1Start: function(){
+
     varTEST1 = '_start';
 
     //disables multiple starts
@@ -194,6 +201,8 @@ var FrameAnim = React.createClass({
         <Text style={{left:this.state._left}}>Animated</Text>
 
         <Text>{varTEST1}</Text>
+        <Text>{varTEST2}</Text>
+
         <Text>{this.state._left}</Text>
 
         <TouchableHighlight style={[styles.roundBox, {top:20, backgroundColor:'green'}]} onPress={this._tick1Start}>
@@ -203,6 +212,18 @@ var FrameAnim = React.createClass({
         <TouchableHighlight style={[styles.roundBox, {top:50, backgroundColor:this.state._changeVariable}]} onPress={this._tick1Stop}>
           <Text style={{left:35, top:30}}>Stop</Text>
         </TouchableHighlight>
+
+
+        {/* these are temporary fix for preloading images -> should try AsyncStorage */}
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball1.png')}></Image>
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball2.png')}></Image>
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball3.png')}></Image>
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball4.png')}></Image>
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball5.png')}></Image>
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball6.png')}></Image>
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball7.png')}></Image>
+        <Image style={{opacity:0, height:0, width:0}} source={require('./images/ball8.png')}></Image>
+
 
       </View>
     );
@@ -225,7 +246,8 @@ const styles = StyleSheet.create({
   },
   image:{
     width:50,
-    height:50
+    height:50,
+    backgroundColor: 'transparent'
   }
 });
 
