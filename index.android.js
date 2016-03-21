@@ -19,6 +19,49 @@ var varTEST2 = 'test2';
 
 var FrameAnim = React.createClass({
 
+
+  _ballDirection: '+',
+  _timer2:null,
+  _ballCounter:0,
+  _prevBallCounter:0,
+  _ballTimeOut:25,
+
+  _images: [
+    {
+      id:1,
+      img: require("./images/ball1.png")
+    },
+    {
+      id:2,
+      img: require("./images/ball2.png")
+    },
+    {
+      id:3,
+      img: require("./images/ball3.png")
+    },
+    {
+      id:4,
+      img: require("./images/ball4.png")
+    },
+    {
+      id:5,
+      img: require("./images/ball5.png")
+    },
+    {
+      id:6,
+      img: require("./images/ball6.png")
+    },
+    {
+      id:7,
+      img: require("./images/ball7.png")
+    },
+    {
+      id:8,
+      img: require("./images/ball8.png")
+    },
+  ],
+
+
   componentWillMount: function(){
 
   },
@@ -28,65 +71,17 @@ var FrameAnim = React.createClass({
 
       _left: 0,
       _interval: null,
-      _interval2:null,
       _direction: '+',
-      _ballDirection: '+',
       _changeVariable:'green',
-      _timeOut:10,
+      _timeOut:1,
       _timer:null,
-      _timer2:null,
       _doNotStart:false,
-      _ballCounter:0,
-      _prevBallCounter:0,
-      _ballTimeOut:10,
-/*
-      _images: {
-        ball1: require('./images/ball1.png'),
-        ball2: require('./images/ball2.png'),
-        ball3: require('./images/ball3.png'),
-      },
-*/
-      _images: [
-        {
-          id:1,
-          img: require("./images/ball1.png")
-        },
-        {
-          id:2,
-          img: require("./images/ball2.png")
-        },
-        {
-          id:3,
-          img: require("./images/ball3.png")
-        },
-        {
-          id:4,
-          img: require("./images/ball4.png")
-        },
-        {
-          id:5,
-          img: require("./images/ball5.png")
-        },
-        {
-          id:6,
-          img: require("./images/ball6.png")
-        },
-        {
-          id:7,
-          img: require("./images/ball7.png")
-        },
-        {
-          id:8,
-          img: require("./images/ball8.png")
-        },
-      ],
-
-
+      _interval2:null,
     };
   },
 
   //starts animation
-  _tick1Start: function(){
+  _start: function(){
 
     //disables multiple starts
     if(this.state._doNotStart){
@@ -99,16 +94,21 @@ var FrameAnim = React.createClass({
       _interval:requestAnimationFrame(this._tick),
       _interval2:requestAnimationFrame(this._tick2),
     });
+
+
+    //
   },
 
 
   //stops animation, deletes thread, hopefully
   //possible to delete ALL threads if multiple?
-  _tick1Stop: function(){
+  //resets the text but not the ball-animation
+  _stop: function(){
+
     _doNotStart:false,
 
     clearTimeout(this.state._timer);
-    clearTimeout(this.state._timer2);
+    clearTimeout(this._timer2);
 
     cancelAnimationFrame(this.state._interval);
     cancelAnimationFrame(this.state._interval2);
@@ -153,38 +153,37 @@ var FrameAnim = React.createClass({
     },this.state._timeOut);
   },
 
-
   //ongoing animation for frame-animation (ball that changes size)
+  //no setstates:
   _tick2: function(){
 
-    if(this.state._ballDirection == '+'){
-      if(this.state._ballCounter == 7)
+    if(this._ballDirection == '+'){
+      if(this._ballCounter == 7)
       {
-        this.state._ballDirection = '-'
-        this.state._ballCounter -= 1;
+        this._ballDirection = '-'
+        this._ballCounter -= 1;
       }
       else{
-        this.state._ballCounter += 1;
+        this._ballCounter += 1;
       }
     }
     else{
-      if(this.state._ballCounter == 0){
-        this.state._ballDirection = '+'
-        this.state._ballCounter += 1;
+      if(this._ballCounter == 0){
+        this._ballDirection = '+'
+        this._ballCounter += 1;
       }
       else {
-        this.state._ballCounter -= 1;
+        this._ballCounter -= 1;
       }
     }
 
-    this.state._timer2 = setTimeout(() => {
+    this._showImage = this._images[this._ballCounter].img,
+
+    this._timer2 = setTimeout(() => {
       this.setState({
-        _ballCounter: this.state._ballCounter,
-        _ballDirection: this.state._ballDirection,
-        _showImage: this.state._images[this.state._ballCounter].img,
         _interval2: requestAnimationFrame(this._tick2),
       });
-    },this.state._ballTimeOut);
+    },this._ballTimeOut);
 
   },
 
@@ -194,17 +193,17 @@ var FrameAnim = React.createClass({
     return (
       <View style={styles.container}>
 
-        <Image source={this.state._showImage} style={[styles.image]}>
+        <Image source={this._showImage} style={[styles.image]}>
 
         </Image>
 
         <Text style={{left:this.state._left}}>AnImAtEd</Text>
 
-        <TouchableHighlight style={[styles.roundBox, {top:20, backgroundColor:'green'}]} onPress={this._tick1Start}>
+        <TouchableHighlight style={[styles.roundBox, {top:20, backgroundColor:'green'}]} onPress={this._start}>
           <Text style={{left:35, top:30}}>Start</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={[styles.roundBox, {top:50, backgroundColor:this.state._changeVariable}]} onPress={this._tick1Stop}>
+        <TouchableHighlight style={[styles.roundBox, {top:50, backgroundColor:this.state._changeVariable}]} onPress={this._stop}>
           <Text style={{left:35, top:30}}>Stop</Text>
         </TouchableHighlight>
 
