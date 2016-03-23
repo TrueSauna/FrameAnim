@@ -12,6 +12,8 @@ import React, {
   Image,
   TouchableHighlight,
   AsyncStorage,
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
 
 var varTEST1 = 'test';
@@ -26,7 +28,6 @@ var FrameAnim = React.createClass({
   _prevBallCounter:0,
   _ballTimeOut:25,
 
-  _propStyles:{},
 
   _images: [
     {
@@ -63,13 +64,30 @@ var FrameAnim = React.createClass({
     },
   ],
 
+  _dwarfTimer:null,
+  _dwarfCounter:0,
+  _dwarfTimeOut:100,
+
+
+  _imagesD: [
+    {id:1,img: require("./images/dwarf_1.png")},
+    {id:2,img: require("./images/dwarf_2.png")},
+    {id:3,img: require("./images/dwarf_1.png")},
+    {id:4,img: require("./images/dwarf_3.png")},
+  ],
+
 
   componentWillMount: function(){
+
     this._propStyles = {
       style: {
         left:0,
-      }
+        top:0,
+        borderWidth:2,
+      },
+
     };
+    this._testProp = 'test';
   },
 
   getInitialState: function(){
@@ -84,11 +102,8 @@ var FrameAnim = React.createClass({
       _doNotStart:false,
       _interval2:null,
       _interval3:null,
-      _propStyles : {
-        style: {
-          left:0,
-        }
-      },
+      _interval4:null,
+
     };
   },
 
@@ -104,7 +119,7 @@ var FrameAnim = React.createClass({
     this._doNotStart = true;
     this._interval3 = requestAnimationFrame(this._tick3);
 
-
+    this._interval4 = requestAnimationFrame(this._tick4);
 
     /*
     this.setState({
@@ -133,7 +148,14 @@ var FrameAnim = React.createClass({
     //cancelAnimationFrame(this.state._interval2);
 
     cancelAnimationFrame(this._interval3);
+
+    clearTimeout(this._dwarfTimer);
+    cancelAnimationFrame(this._interval4);
+
+
+
     this._propStyles.style.left = 0;
+    this._propStyles.style.top = 0;
     this._textBox.setNativeProps(this._propStyles);
 
     //this.setState(this.getInitialState());
@@ -217,9 +239,45 @@ var FrameAnim = React.createClass({
 
   //animation with no setstates, seems to work better with more stuff in render
   _tick3: function(){
+
     this._propStyles.style.left += 1;
+
+    //this._textInput.setNativeProps({text:'text input'});
+    //this._image.setNativeProps({source:(require('./images/ball8.png'))});
+    this._showImage = this._images[7].img,
+
     this._textBox.setNativeProps(this._propStyles);
+
     this._interval3 = requestAnimationFrame(this._tick3);
+
+  },
+
+  isEven: function (n) {
+   return n % 2 == 0;
+  },
+
+  isOdd: function (n) {
+   return Math.abs(n % 2) == 1;
+  },
+
+  _tick4: function(){
+
+    if(this._dwarfCounter == 4){
+      this._dwarfCounter = 0;
+    }
+
+    this._showDwarf = this._imagesD[this._dwarfCounter].img,
+
+    this._dwarfCounter++;
+
+    this._dwarfTimer = setTimeout(() => {
+      this.setState({
+        _interval4: requestAnimationFrame(this._tick4),
+      });
+    },150);
+
+
+
   },
 
   render: function() {
@@ -227,17 +285,25 @@ var FrameAnim = React.createClass({
     return (
       <View style={styles.container}>
 
-        <Image source={this._showImage} style={[styles.image]}>
+        <Image style={[styles.image]} ref={component => this._image = component}{...this.props}>
+
         </Image>
 
         <Text style={{left:this.state._left}}>AnImAtEd</Text>
 
-        <Text ref={component => this._textBox = component}{...this.props}>Propshere</Text>
+
+  {/*
+        <TextInput ref={component => this._textInput = component}{...this.props}></TextInput>*/}
 
 
+        <Image style={styles.image} source={this._showDwarf}>
+        </Image>
 
+        <View ref={component => this._textBox = component}{...this.props}>
+          <Text>asdads</Text>
+        </View>
 
-        <TouchableHighlight style={[styles.roundBox, {top:20, backgroundColor:'green'}]} onPress={this._start}>
+        <TouchableHighlight style={[styles.roundBox, {top:50, backgroundColor:'green'}]} onPress={this._start}>
           <Text style={{left:35, top:30}}>Start</Text>
         </TouchableHighlight>
 
@@ -278,6 +344,7 @@ const styles = StyleSheet.create({
     height:100,
   },
   image:{
+    position:'absolute',
     width:50,
     height:50,
   },
