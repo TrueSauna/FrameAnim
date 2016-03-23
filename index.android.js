@@ -275,7 +275,7 @@ var FrameAnim = React.createClass({
       this.setState({
         _interval4: requestAnimationFrame(this._tick4),
       });
-    },150);
+    },80);
 
 
 
