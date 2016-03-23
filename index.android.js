@@ -26,6 +26,8 @@ var FrameAnim = React.createClass({
   _prevBallCounter:0,
   _ballTimeOut:25,
 
+  _propStyles:{},
+
   _images: [
     {
       id:1,
@@ -63,7 +65,11 @@ var FrameAnim = React.createClass({
 
 
   componentWillMount: function(){
-
+    this._propStyles = {
+      style: {
+        left:0,
+      }
+    };
   },
 
   getInitialState: function(){
@@ -77,6 +83,12 @@ var FrameAnim = React.createClass({
       _timer:null,
       _doNotStart:false,
       _interval2:null,
+      _interval3:null,
+      _propStyles : {
+        style: {
+          left:0,
+        }
+      },
     };
   },
 
@@ -84,17 +96,24 @@ var FrameAnim = React.createClass({
   _start: function(){
 
     //disables multiple starts
-    if(this.state._doNotStart){
+    if(this._doNotStart){
       return;
     }
 
+    //INTERVAL3 HAS NO SETSTATES:
+    this._doNotStart = true;
+    this._interval3 = requestAnimationFrame(this._tick3);
+
+
+
+    /*
     this.setState({
       _doNotStart:true,
       _left:0,
-      _interval:requestAnimationFrame(this._tick),
-      _interval2:requestAnimationFrame(this._tick2),
+      //_interval:requestAnimationFrame(this._tick),
+      //_interval2:requestAnimationFrame(this._tick2),
     });
-
+    */
 
     //
   },
@@ -105,19 +124,23 @@ var FrameAnim = React.createClass({
   //resets the text but not the ball-animation
   _stop: function(){
 
-    _doNotStart:false,
+    this._doNotStart = false;
 
-    clearTimeout(this.state._timer);
-    clearTimeout(this._timer2);
+    //clearTimeout(this.state._timer);
+    //clearTimeout(this._timer2);
 
-    cancelAnimationFrame(this.state._interval);
-    cancelAnimationFrame(this.state._interval2);
+    //cancelAnimationFrame(this.state._interval);
+    //cancelAnimationFrame(this.state._interval2);
 
-    this.setState(this.getInitialState());
+    cancelAnimationFrame(this._interval3);
+    this._propStyles.style.left = 0;
+    this._textBox.setNativeProps(this._propStyles);
+
+    //this.setState(this.getInitialState());
   },
 
 
-  //runs the ongoing animation
+  //runs the ongoing animation, not used atm
   _tick: function(){
     //setTimeout(this._tick, 1000/this.state.fps);
 
@@ -144,20 +167,24 @@ var FrameAnim = React.createClass({
       }
     }
 
+    //setting timeout between animationcalls
     this.state._timer = setTimeout(() => {
       this.setState({
         _left: this.state._left,
         _direction: this.state._direction,
+        //callin recursively itself, rAF has built-in logic to wait that previous draw is finished before starting new
+        //=> compare to setInterval, which pushes to next frame as soon as it can without any logic
+        //to get good fps (~60), rAF-logic should not take more than ~20 ms / call
         _interval: requestAnimationFrame(this._tick),
       });
     },this.state._timeOut);
   },
 
-  //ongoing animation for frame-animation (ball that changes size)
-  //no setstates:
+  //ongoing animation for frame-animation (ball that changes size), not used atm
   _tick2: function(){
 
     if(this._ballDirection == '+'){
+      //7 = 0-7 images
       if(this._ballCounter == 7)
       {
         this._ballDirection = '-'
@@ -177,6 +204,7 @@ var FrameAnim = React.createClass({
       }
     }
 
+    //image require from array, could be in setstate:
     this._showImage = this._images[this._ballCounter].img,
 
     this._timer2 = setTimeout(() => {
@@ -187,6 +215,12 @@ var FrameAnim = React.createClass({
 
   },
 
+  //animation with no setstates, seems to work better with more stuff in render
+  _tick3: function(){
+    this._propStyles.style.left += 1;
+    this._textBox.setNativeProps(this._propStyles);
+    this._interval3 = requestAnimationFrame(this._tick3);
+  },
 
   render: function() {
 
@@ -194,10 +228,14 @@ var FrameAnim = React.createClass({
       <View style={styles.container}>
 
         <Image source={this._showImage} style={[styles.image]}>
-
         </Image>
 
         <Text style={{left:this.state._left}}>AnImAtEd</Text>
+
+        <Text ref={component => this._textBox = component}{...this.props}>Propshere</Text>
+
+
+
 
         <TouchableHighlight style={[styles.roundBox, {top:20, backgroundColor:'green'}]} onPress={this._start}>
           <Text style={{left:35, top:30}}>Start</Text>
