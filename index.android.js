@@ -72,8 +72,9 @@ var FrameAnim = React.createClass({
   _imagesD: [
     {id:1,img: require("./images/dwarf_1.png")},
     {id:2,img: require("./images/dwarf_2.png")},
-    {id:3,img: require("./images/dwarf_1.png")},
-    {id:4,img: require("./images/dwarf_3.png")},
+    {id:3,img: require("./images/dwarf_3.png")},
+    {id:4,img: require("./images/dwarf_4.png")},
+    {id:5,img: require("./images/dwarf_5.png")},
   ],
 
 
@@ -262,7 +263,7 @@ var FrameAnim = React.createClass({
 
   _tick4: function(){
 
-    if(this._dwarfCounter == 4){
+    if(this._dwarfCounter == this._imagesD.length){
       this._dwarfCounter = 0;
     }
 
