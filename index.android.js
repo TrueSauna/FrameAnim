@@ -287,7 +287,6 @@ var FrameAnim = React.createClass({
       <View style={styles.container}>
 
         <Image style={[styles.image]} ref={component => this._image = component}{...this.props}>
-
         </Image>
 
         <Text style={{left:this.state._left}}>AnImAtEd</Text>
@@ -299,6 +298,10 @@ var FrameAnim = React.createClass({
 
         <Image style={styles.image} source={this._showDwarf}>
         </Image>
+
+        <Image style={[styles.image, {left:22, marginTop:2}]} source={require("./images/elf_w_orig.png")}>
+        </Image>
+
 
         <View ref={component => this._textBox = component}{...this.props}>
           <Text>asdads</Text>
