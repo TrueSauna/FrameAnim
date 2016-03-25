@@ -245,7 +245,7 @@ var FrameAnim = React.createClass({
 
     //this._textInput.setNativeProps({text:'text input'});
     //this._image.setNativeProps({source:(require('./images/ball8.png'))});
-    this._showImage = this._images[7].img,
+    //this._showImage = this._images[7].img,
 
     this._textBox.setNativeProps(this._propStyles);
 
@@ -296,10 +296,10 @@ var FrameAnim = React.createClass({
         <TextInput ref={component => this._textInput = component}{...this.props}></TextInput>*/}
 
 
-        <Image style={styles.image} source={this._showDwarf}>
+        <Image style={[styles.image, {left:-10}]} source={this._showDwarf}>
         </Image>
 
-        <Image style={[styles.image, {left:22, marginTop:2}]} source={require("./images/elf_w_orig.png")}>
+        <Image style={[styles.image, {left:30, marginTop:2}]} source={require("./images/elf_w_orig.png")}>
         </Image>
 
 
@@ -349,8 +349,10 @@ const styles = StyleSheet.create({
   },
   image:{
     position:'absolute',
-    width:50,
-    height:50,
+    width:100,
+    height:100,
+    padding:0,
+    margin:0,
   },
   image2:{
     height:0,
