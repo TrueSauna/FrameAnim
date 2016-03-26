@@ -302,6 +302,8 @@ var FrameAnim = React.createClass({
         <Image style={[styles.image, {left:30, marginTop:2}]} source={require("./images/elf_w_orig.png")}>
         </Image>
 
+        <Image style={[styles.image, {top:-10,left:-10}]} source={require("./images/head.png")}>
+        </Image>
 
         <View ref={component => this._textBox = component}{...this.props}>
           <Text>asdads</Text>
